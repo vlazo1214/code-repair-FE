@@ -1,5 +1,28 @@
 # event handlers
 
+import gradio as gr
+
+def custom_theme():
+    # Gradio UI styling
+    return gr.themes.Ocean(
+        primary_hue=gr.themes.Color(c100="#fef9c3", c200="#fef08a", c300="#fde047", c400="#facc15", c50="#fefce8", c500="#eab308", c600="#ca8a04", c700="#a16207", c800="#854d0e", c900="#713f12", c950="#BA9B37"),
+        secondary_hue="zinc",
+        radius_size="lg",
+    ).set(
+        background_fill_primary='*neutral_900',
+        background_fill_secondary='*neutral_700',
+        body_background_fill='*secondary_900',
+        body_text_color='*neutral_100',
+        body_text_color_subdued='*neutral_400',
+        border_color_accent='*neutral_900',
+        button_secondary_background_fill='linear-gradient(120deg, *secondary_900 0%, *primary_400 50%, *primary_700 100%)',
+        button_secondary_background_fill_hover='linear-gradient(120deg, *secondary_900 0%, *primary_400 50%, *primary_700 100%)',
+        checkbox_label_background_fill_selected="linear-gradient(120deg, *secondary_900 0%, *primary_400 50%, *primary_700 100%)",
+        code_background_fill='*neutral_950',
+        color_accent_soft='*primary_950',
+        input_background_fill='*neutral_700',
+        table_odd_background_fill='*neutral_700'
+    )
 
 def custom_css():
     return """

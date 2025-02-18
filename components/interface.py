@@ -9,9 +9,10 @@ from components.patch_validation import create_patch_validation_tab
 from components.file_upload import create_file_upload_section
 
 def create_interface():
-    choices = {"ChatGPT", "Claude"}
+    # TODO: Replace with actual choices
+    choices = ["ChatGPT", "Claude"]
 
-    with gr.Blocks(css=iutils.custom_css()) as interface:
+    with gr.Blocks(theme=iutils.custom_theme(), css=iutils.custom_css()) as interface:
         with gr.Column():
             # Header with Logo
             with gr.Row():
