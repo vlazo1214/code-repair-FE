@@ -7,6 +7,8 @@ from components.pattern_matching import create_pattern_matching_tab
 from components.patch_generation import create_patch_generation_tab
 from components.patch_validation import create_patch_validation_tab
 from components.file_upload import create_file_upload_section
+from components.model_selection import create_model_selection_dropdown
+
 
 def create_interface():
     # TODO: Replace with actual choices
@@ -22,7 +24,14 @@ def create_interface():
 
             # Tabs for Different Features
             with gr.Tab("Chat"):
-                create_bug_finding_tab(choices)
+                with gr.Column():
+                    steps = ["Bug Finding", "Pattern Matching", "Patch Generation", "Patch Validation"]
+                    checkboxes = gr.CheckboxGroup(steps, label="Select Desired Steps", value=steps, interactive=True)
+                    create_model_selection_dropdown(choices)
+                    with gr.Column():
+                        chatbot = gr.Chatbot(value=None, type="messages", show_label=True, show_share_button=False)
+                        msg, submit_button = create_chat_controls()
+
 
             with gr.Tab("Bug Finding"):
                 create_bug_finding_tab(choices)
@@ -36,9 +45,7 @@ def create_interface():
             with gr.Tab("Patch Validation"):
                 create_patch_validation_tab(choices)
 
-            # Chatbot Always at the Bottom
-            with gr.Column():
-                chatbot = gr.Chatbot(value=None, type="messages", show_label=True, show_share_button=False)
-                create_chat_controls()
+        # TODO: need new function to handle future pipeline calls
+        # msg.submit(fn=handle_initiate_pipeline, inputs=[files, checkboxes, msg], outputs=[chatbot]) # clone for submit_button
 
     return interface

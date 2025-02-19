@@ -16,6 +16,7 @@ def handle_initiate_pipeline(files, selected_steps, initial_prompt):
     binary_steps = convert_steps(selected_steps)
 
     # TODO: Do something with prompt
+    
     response = initiate_pipeline_call(files, binary_steps)
     '''
         Delete print below in production
