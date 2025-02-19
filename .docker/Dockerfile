@@ -19,4 +19,4 @@ COPY . .
 EXPOSE 7860
 
 # Command to run the Gradio app
-CMD ["python", "interface.py"]
+CMD ["python", "main.py"]
