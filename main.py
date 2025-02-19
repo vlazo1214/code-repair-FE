@@ -6,5 +6,5 @@ app = create_full_ui()
 
 # Launch the app
 if __name__ == "__main__":
-    app.launch(show_api=False)
+    app.launch(share=True, show_api=False)
 
