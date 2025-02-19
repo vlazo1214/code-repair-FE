@@ -31,7 +31,6 @@ matplotlib==3.10.0
 mdurl==0.1.2
 mplfinance==0.12.10b0
 numpy==2.2.2
-nvdlib==0.7.9
 orjson==3.10.15
 packaging==24.2
 pandas==2.2.3
