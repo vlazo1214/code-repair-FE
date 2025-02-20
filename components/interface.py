@@ -1,14 +1,18 @@
 import gradio as gr
 import os
 import utils.interface_utils as iutils
-from components.chat import create_chat_controls
+from components.chat import create_chat_controls, set_websocket_client
 from components.bug_finding import create_bug_finding_tab
 from components.pattern_matching import create_pattern_matching_tab
 from components.patch_generation import create_patch_generation_tab
 from components.patch_validation import create_patch_validation_tab
 from components.file_upload import create_file_upload_section
 
-def create_interface():
+def create_interface(ws_client=None):
+
+    if ws_client:
+        set_websocket_client(ws_client)
+
     choices = {"ChatGPT", "Claude"}
 
     with gr.Blocks(css=iutils.custom_css()) as interface:
@@ -37,7 +41,7 @@ def create_interface():
 
             # Chatbot Always at the Bottom
             with gr.Column():
-                chatbot = gr.Chatbot(value=None, type="messages", show_label=True, show_share_button=False)
-                create_chat_controls()
+                chatbot = gr.Chatbot(value=None, type="tuples", show_label=True, show_share_button=False)
+                create_chat_controls(chatbot)
 
     return interface
