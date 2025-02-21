@@ -4,9 +4,11 @@ import utils.interface_utils as iutils
 from api.initiate_pipeline_call import initiate_pipeline_call
 from utils.convert_steps import convert_steps
 from utils.storage import save_jwt_to_session
+from api.WebSocketClient import WebSocketClient
 from components.interface import create_interface
 from components.model_selection import create_model_selection_dropdown
 
+ws_client = WebSocketClient()
 def handle_initiate_pipeline(files, selected_steps, initial_prompt):
     """Processes the file upload and initiates the pipeline."""
     if not files:
@@ -21,8 +23,12 @@ def handle_initiate_pipeline(files, selected_steps, initial_prompt):
     '''
         Delete print below in production
     '''
-    print(response)
-    save_jwt_to_session(response)  
+    print(response.json())
+    #3session_token_update, session_id_update, session_id = save_jwt_to_session(response) 
+
+    session_id = response.json()["session_token"]
+    
+    ws_client.start_background_connection(session_id)
 
     return gr.update(visible=False), gr.update(visible=True)
 
@@ -54,8 +60,8 @@ def create_full_ui():
             initiate_button = gr.Button("Initiate Pipeline")
 
         # Main Interface UI (Initially Hidden)
-        with gr.Row(visible=False) as main_interface:
-            interface = create_interface()
+        with gr.Column(visible=False) as main_interface:
+            interface = create_interface(ws_client)
 
         # Button click should happen inside the context
         initiate_button.click(

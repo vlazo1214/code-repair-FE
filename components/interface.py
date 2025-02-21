@@ -1,7 +1,7 @@
 import gradio as gr
 import os
 import utils.interface_utils as iutils
-from components.chat import create_chat_controls
+from components.chat import create_chat_controls, set_websocket_client
 from components.bug_finding import create_bug_finding_tab
 from components.pattern_matching import create_pattern_matching_tab
 from components.patch_generation import create_patch_generation_tab
@@ -10,9 +10,12 @@ from components.file_upload import create_file_upload_section
 from components.model_selection import create_model_selection_dropdown
 
 
-def create_interface():
-    # TODO: Replace with actual choices
-    choices = ["ChatGPT", "Claude"]
+def create_interface(ws_client=None):
+
+    if ws_client:
+        set_websocket_client(ws_client)
+
+    choices = {"ChatGPT", "Claude"}
 
     with gr.Blocks(theme=iutils.custom_theme(), css=iutils.custom_css()) as interface:
         with gr.Column():
@@ -29,8 +32,8 @@ def create_interface():
                     checkboxes = gr.CheckboxGroup(steps, label="Select Desired Steps", value=steps, interactive=True)
                     create_model_selection_dropdown(choices)
                     with gr.Column():
-                        chatbot = gr.Chatbot(value=None, type="messages", show_label=True, show_share_button=False)
-                        msg, submit_button = create_chat_controls()
+                        chatbot = gr.Chatbot(value=None, type="tuples", show_label=True, show_share_button=False)
+                        create_chat_controls(chatbot)
 
 
             with gr.Tab("Bug Finding"):
@@ -45,7 +48,9 @@ def create_interface():
             with gr.Tab("Patch Validation"):
                 create_patch_validation_tab(choices)
 
-        # TODO: need new function to handle future pipeline calls
-        # msg.submit(fn=handle_initiate_pipeline, inputs=[files, checkboxes, msg], outputs=[chatbot]) # clone for submit_button
+            # Chatbot Always at the Bottom
+            # with gr.Column():
+            #     chatbot = gr.Chatbot(value=None, type="tuples", show_label=True, show_share_button=False)
+            #     create_chat_controls(chatbot)
 
     return interface
