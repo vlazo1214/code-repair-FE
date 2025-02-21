@@ -32,8 +32,8 @@ def create_interface(ws_client=None):
                     checkboxes = gr.CheckboxGroup(steps, label="Select Desired Steps", value=steps, interactive=True)
                     create_model_selection_dropdown(choices)
                     with gr.Column():
-                        chatbot = gr.Chatbot(value=None, type="messages", show_label=True, show_share_button=False)
-                        msg, submit_button = create_chat_controls()
+                        chatbot = gr.Chatbot(value=None, type="tuples", show_label=True, show_share_button=False)
+                        create_chat_controls(chatbot)
 
 
             with gr.Tab("Bug Finding"):
@@ -49,8 +49,8 @@ def create_interface(ws_client=None):
                 create_patch_validation_tab(choices)
 
             # Chatbot Always at the Bottom
-            with gr.Column():
-                chatbot = gr.Chatbot(value=None, type="tuples", show_label=True, show_share_button=False)
-                create_chat_controls(chatbot)
+            # with gr.Column():
+            #     chatbot = gr.Chatbot(value=None, type="tuples", show_label=True, show_share_button=False)
+            #     create_chat_controls(chatbot)
 
     return interface
