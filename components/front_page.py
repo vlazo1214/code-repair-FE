@@ -35,6 +35,7 @@ def create_full_ui():
         # Front Page UI
         with gr.Column(visible=True) as front_page:
             gr.Markdown("# Welcome to Code Repair with LLMs!")
+            gr.Markdown("# Welcome to Code Repair with LLMs!")
             gr.Markdown("## Upload your files/codebase. All steps of the pipeline will be executed on the initial run.")
 
             file_input = gr.Files(
