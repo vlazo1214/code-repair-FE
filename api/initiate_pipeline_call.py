@@ -29,6 +29,6 @@ def initiate_pipeline_call(files, pipeline_steps):
         )
         
         response.raise_for_status()  # Raise exception for bad status codes
-        return response.json()
+        return response
     except requests.exceptions.RequestException as e:
         return f"Error: {str(e)}"
