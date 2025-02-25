@@ -33,7 +33,8 @@ class Model:
             logger.info("Initializing in test mode")
             self.model: str = "meta-llama/llama-3-8b-instruct:free"
             self.provider: str = "openrouter"
-            self.api_key: str = "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"
+            self.api_key: str = os.getenv("OPENROUTER_API_KEY", 
+                openrouter_api_key)
             logger.debug(f"Test mode settings - Model: {self.model}, Provider: {self.provider}")
         else:
             logger.info("Initializing in production mode")

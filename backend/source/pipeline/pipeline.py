@@ -22,11 +22,7 @@ from source.model.model import Model
 # load api key from .env
 load_dotenv()
 openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
-
-# global values for testing
-API_KEY = "fw_3ZhhWY3zea3May74cgPSqU4r"
-PROVIDER = "fireworks"
-MODEL_NAME = "accounts/eriktajti-a69f1e/deployedModels/ft-55346a98-791f5-9f0c0828"  # Model name without provider prefix
+fireworks_api_key = os.getenv("FIREWORKS_API_KEY")
 
 """
 this pipeline will be the main process for the pipeline that is being integrated
@@ -39,7 +35,7 @@ class Pipeline:
         if test:
             self.set_model(test=True)
         else:
-            self.set_model(model_selection=model, api_key=API_KEY, provider=PROVIDER)
+            self.set_model(model_selection=model, api_key=fireworks_api_key, provider="fireworks")
         self.set_rag()
 
         self.precode_content = precode_content
