@@ -11,6 +11,4 @@ services:
       - .:/app
     environment:
       - PYTHONUNBUFFERED=1
-      - OPENROUTER_API_KEY=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
-      - FIREWORKS_API_KEY=fw_3ZhhWY3zea3May74cgPSqU4r
     restart: unless-stopped
