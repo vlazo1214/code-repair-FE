@@ -1,0 +1,24 @@
+{
+    "models": {
+        "meta-llama/llama-3-8b-instruct:free": {
+            "provider": "openrouter",
+            "tokenizer": "meta-llama/Meta-Llama-3-8B-Instruct",
+            "max_context": 8192,
+            "max_response": 4096,
+            "temperature": 0.7,
+            "top_k": 50,
+            "top_p": 0.95,
+            "description": "Llama 3 8B Instruct Model"
+        },
+        "accounts/eriktajti-a69f1e/deployedModels/ft-55346a98-791f5-9f0c0828": {
+            "provider": "fireworks",
+            "tokenizer": "",
+            "max_context": 8192,
+            "max_response": 4096,
+            "temperature": 0.7,
+            "top_k": 50,
+            "top_p": 0.95,
+            "description": "Llama 3.1 70B Instruct Model"
+        }
+    }
+}
