@@ -73,7 +73,6 @@ zope.interface==7.2
 websocket-client
 python-dotenv==1.0.1
 faiss-cpu==1.10.0
-huggingface_hub==0.25.1
 langchain_text_splitters==0.3.6
 sentence_transformers==3.4.1
 transformers==4.45.1
