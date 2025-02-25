@@ -25,7 +25,7 @@ openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
 fireworks_api_key = os.getenv("FIREWORKS_API_KEY")
 
 """
-this pipeline will be the main process for the pipeline that is being integrated
+this pipeline will be the main process for the pipeline that is being integrated :)
 """
 class Pipeline:
     def __init__(self, filename: str, precode_content: str, model: Optional[str] = None, test: bool = False) -> None:
