@@ -9,9 +9,30 @@ from api.WebSocketClient import WebSocketClient
 #from components.model_selection import create_model_selection_dropdown
 
 from components.file_utils import read_file, get_file_language
-from components.pipeline_service import initialize_pipeline, run_pipeline, run_fault_localization, get_final_patch
+from components.pipeline_service import initialize_pipeline, run_pipeline, run_fault_localization, run_pattern_matching, run_patch_generation, run_patch_validation, get_final_patch
 from components.ui_helpers import enable_continue, disable_continue_show_rerun
 from components.callbacks import on_continue1, on_continue2, on_continue3
+
+# Gradio UI styling
+theme = gr.themes.Ocean(
+    primary_hue=gr.themes.Color(c100="#fef9c3", c200="#fef08a", c300="#fde047", c400="#facc15", c50="#fefce8", c500="#eab308", c600="#ca8a04", c700="#a16207", c800="#854d0e", c900="#713f12", c950="#BA9B37"),
+    secondary_hue="zinc",
+    radius_size="lg",
+).set(
+    background_fill_primary='*neutral_900',
+    background_fill_secondary='*neutral_700',
+    body_background_fill='*secondary_900',
+    body_text_color='*neutral_100',
+    body_text_color_subdued='*neutral_400',
+    border_color_accent='*neutral_900',
+    button_secondary_background_fill='linear-gradient(120deg, *secondary_900 0%, *primary_400 50%, *primary_700 100%)',
+    button_secondary_background_fill_hover='linear-gradient(120deg, *secondary_900 0%, *primary_400 50%, *primary_700 100%)',
+    checkbox_label_background_fill_selected="linear-gradient(120deg, *secondary_900 0%, *primary_400 50%, *primary_700 100%)",
+    code_background_fill='*neutral_950',
+    color_accent_soft='*primary_950',
+    input_background_fill='*neutral_700',
+    table_odd_background_fill='*neutral_700'
+)
 
 css_code = """
 /* Custom CSS for the header bar */
@@ -96,11 +117,11 @@ def handle_initiate_pipeline(files, selected_steps, initial_prompt):
     return gr.update(visible=False), gr.update(visible=True)
 
 def create_full_ui():
-    with gr.Blocks(css=css_code) as app:
+    with gr.Blocks(theme=theme, css=css_code) as app:
         # Header Bar with Logo and Title using gr.Image and gr.HTML
         with gr.Row(elem_classes="header-bar"):
             logo = gr.Image(
-                value="gui-SD/logo.png",
+                value="logo.png",
                 interactive=False,
                 show_download_button=False,
                 show_fullscreen_button=False,
@@ -129,6 +150,7 @@ def create_full_ui():
                     label="Model selection dropdown", 
                     choices=["Meta Llama 3 8B-Instruct(Test)", "Meta Llama 3.1 70B-Instruct"]
                 )
+                pipeline_status = gr.Textbox("Status of the pipeline will appear here.", label="Pipeline Status", interactive=False)
                 run_pipeline_btn = gr.Button("Run Pipeline", interactive=False)
                 manual_run_btn = gr.Button("Manual Run", interactive=False)
             # Right Column: Tabs for Each Pipeline Stage
@@ -171,7 +193,7 @@ def create_full_ui():
         ).then(
             fn=run_fault_localization,
             inputs=[],
-            outputs=stage_output_1
+            outputs=[stage_output_1, pipeline_status]
         ).then(
             fn=enable_continue,
             inputs=[],
@@ -185,31 +207,48 @@ def create_full_ui():
         ).then(
             fn=initialize_pipeline,
             inputs=[file_display, file_uploader, model_selection],
-            outputs=[]
+            outputs=[pipeline_status]
         ).then(
-            fn=run_pipeline,
+            fn=run_fault_localization,
             inputs=[],
-            outputs=[stage_output_1, stage_output_2, stage_output_3, stage_output_4]
+            outputs=[stage_output_1, pipeline_status]
+        ).then(
+            fn=run_pattern_matching,
+            inputs=[],
+            outputs=[stage_output_2, pipeline_status]
+        ).then(
+            fn=run_patch_generation,
+            inputs=[],
+            outputs=[stage_output_3, pipeline_status]
+        ).then(
+            fn=run_patch_validation,
+            inputs=[],
+            outputs=[stage_output_4, pipeline_status]
         ).then(
             fn=get_final_patch,
             inputs=[],
-            outputs=[file_display_final]
+            outputs=[file_display_final, pipeline_status]
         )
+
+        # ).then(
+        #     fn=run_pipeline,
+        #     inputs=[],
+        #     outputs=[stage_output_1, stage_output_2, stage_output_3, stage_output_4]
 
         continue_button_1.click(
             fn=on_continue1,
             inputs=[],
-            outputs=[continue_button_2, stage_output_2]
+            outputs=[continue_button_2, stage_output_2, pipeline_status]
         )
         continue_button_2.click(
             fn=on_continue2,
             inputs=[],
-            outputs=[continue_button_3, stage_output_3]
+            outputs=[continue_button_3, stage_output_3, pipeline_status]
         )
         continue_button_3.click(
             fn=on_continue3,
             inputs=[],
-            outputs=[continue_button_4, stage_output_4, file_display_final]
+            outputs=[continue_button_4, stage_output_4, file_display_final, pipeline_status]
         )
 
     return app

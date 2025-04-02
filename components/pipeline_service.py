@@ -1,5 +1,6 @@
 # pipeline_service.py .
 import os
+import gradio as gr
 from backend.source.pipeline.pipeline import Pipeline
 
 pipeline = None
@@ -33,21 +34,25 @@ def initialize_pipeline(file_display_value, file_obj, model):
         print("Pipeline initialized with file:", file_name)
         print("Content length:", len(file_content))
         print("Language detected:", language)
+    
+        yield "Pipeline initialized with file:", file_name
+
     except Exception as e:
         print(f"Error initializing pipeline: {str(e)}")
         pipeline = Pipeline("Unknown", "")
         language = "text"
+        return gr.update(f"Error initializing pipeline: {str(e)}")
 
 def run_fault_localization():
     pipeline.fault_localization()
-    return str(pipeline.localization)
+    return str(pipeline.localization), "Fault localization complete."
 
 def run_pattern_matching():
     pipeline.pattern_matching()
     complete_output = ""
     for pre_pattern in pipeline.pre_patterns:
         complete_output += f"{pre_pattern}\n"
-    return complete_output
+    return complete_output, "Pattern matching complete."
 
 def run_patch_generation():
     pipeline.patch_generation()
@@ -58,12 +63,12 @@ def run_patch_generation():
             f"<details class='dropdown-html'><summary>{label}</summary>"
             f"<pre><code>{patch}</code></pre></details><br>"
         )
-    return html_output
+    return html_output, "Patch generation complete."
 
 def run_patch_validation():
     pipeline.patch_validation()
     pipeline.rag.clear_index()
-    return str(pipeline.validation)
+    return str(pipeline.validation), "Patch validation complete."
 
 def run_pipeline():
     return (
@@ -76,5 +81,5 @@ def run_pipeline():
 def get_final_patch():
     """Return the final patch from the pipeline's patches list."""
     if pipeline is not None and hasattr(pipeline, "patches") and pipeline.patches:
-        return pipeline.patches[-1]
-    return ""
+        return pipeline.patches[-1], "Pipeline complete!"
+    return "", "Pipeline complete!"
