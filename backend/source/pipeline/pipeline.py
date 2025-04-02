@@ -4,17 +4,17 @@ import os
 from typing import List, Dict, Optional, Any
 from dotenv import load_dotenv
 
-# from backend.source.pipeline.rag.rag import RAG
-# from backend.source.pipeline.fault_loc.fault_localization import FaultLocalization
-# from backend.source.pipeline.pattern_match.pattern_matching import PatternMatch
-# from backend.source.pipeline.patch_gen.patch_generation import PatchGeneration
-# from backend.source.pipeline.patch_valid.patch_validation import PatchValidation
+from backend.source.pipeline.rag.rag import RAG
+from backend.source.pipeline.fault_loc.fault_localization import FaultLocalization
+from backend.source.pipeline.pattern_match.pattern_matching import PatternMatch
+from backend.source.pipeline.patch_gen.patch_generation import PatchGeneration
+from backend.source.pipeline.patch_valid.patch_validation import PatchValidation
 
-from rag.rag import RAG
-from fault_loc.fault_localization import FaultLocalization
-from pattern_match.pattern_matching import PatternMatch
-from patch_gen.patch_generation import PatchGeneration
-from patch_valid.patch_validation import PatchValidation
+# from rag.rag import RAG
+# from fault_loc.fault_localization import FaultLocalization
+# from pattern_match.pattern_matching import PatternMatch
+# from patch_gen.patch_generation import PatchGeneration
+# from patch_valid.patch_validation import PatchValidation
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 from source.model.model import Model
